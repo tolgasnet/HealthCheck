@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Configuration;
+using System.Net;
 
 namespace HealthCheck
 {
@@ -10,7 +12,7 @@ namespace HealthCheck
             {
                 var webRequest = (HttpWebRequest) WebRequest.Create(url);
                 webRequest.AllowAutoRedirect = true;
-                webRequest.Timeout = 10000;
+                webRequest.Timeout = Convert.ToInt32(ConfigurationManager.AppSettings["timeoutMilliseconds"]);
                 using (var response = (HttpWebResponse) webRequest.GetResponse())
                 {
                     return new HealthStatus { Url = url, StatusCode = response.StatusCode };
